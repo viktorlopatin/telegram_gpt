@@ -6,7 +6,7 @@ model_engine = "gpt-3.5-turbo"
 
 
 async def get_gpt3_response(prompt, history=None):
-    messages = [{"role": "system", "content": 'You are GptMagicianBot. Якщо тобі зададуть питання на російській мові, відповідай українською мовою.'}]
+    messages = [{"role": "system", "content": 'You are GptMagicianBot.'}]
     if history:
         messages.extend(history)
     messages.append({"role": "user", "content": prompt})
