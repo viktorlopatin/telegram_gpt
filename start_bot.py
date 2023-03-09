@@ -47,10 +47,10 @@ async def echo_handler(message: types.Message) -> None:
         await msg.edit_text(gpt_text)
         user.add_message(message.text, role="user")
         user.add_message(gpt_text, role="assistant")
-        await bot.send_message(CHAT_LOGS, f"True")
+        await bot.send_message(CHAT_LOGS, f"{message.text}\n\nTrue")
         Statistic.add_request_true()
     except Exception as e:
-        await bot.send_message(CHAT_LOGS, f"Error: {e}")
+        await bot.send_message(CHAT_LOGS, f"{message.text}\n\nError: {e}")
         await msg.edit_text(f(lang, "answer_error"))
 
 
@@ -88,7 +88,9 @@ async def chosen_inline_handler(query: types.ChosenInlineResult) -> None:
         user.add_message(text, role="user")
         user.add_message(text_gpt, role="assistant")
         Statistic.add_request_true()
+        await bot.send_message(CHAT_LOGS, f"{text}\n\nTrue Inline")
     except Exception as e:
+        await bot.send_message(CHAT_LOGS, f"{text}\n\nError Inline: {e}")
         await bot.edit_message_text(f(lang, "answer_error"), inline_message_id=message_id)
 
 
