@@ -9,7 +9,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from functions import get_gpt3_response
 from Languages import f
 from models import User, Statistic
-from settings import TOKEN
+from settings import TOKEN, CHAT_LOGS
 
 
 router = Router()
@@ -47,9 +47,10 @@ async def echo_handler(message: types.Message) -> None:
         await msg.edit_text(gpt_text)
         user.add_message(message.text, role="user")
         user.add_message(gpt_text, role="assistant")
+        await bot.send_message(CHAT_LOGS, f"True")
         Statistic.add_request_true()
     except Exception as e:
-        print(e)
+        await bot.send_message(CHAT_LOGS, f"Error: {e}")
         await msg.edit_text(f(lang, "answer_error"))
 
 
@@ -94,7 +95,6 @@ async def chosen_inline_handler(query: types.ChosenInlineResult) -> None:
 @router.inline_query(F.query.func(len) > 1)
 async def inline_echo_handler(query: types.InlineQuery) -> None:
     text = query.query
-
 
     builder = InlineKeyboardBuilder()
     builder.add(types.InlineKeyboardButton(
