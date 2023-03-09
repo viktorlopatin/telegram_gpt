@@ -89,7 +89,7 @@ class User(Base):
         res = []
         messages = session.query(UserMessages).filter_by(user_id=self.id).order_by(UserMessages.datetime.desc()).all()
         for message in messages:
-            res.append({"role": "user", "content": message.message})
+            res.append({"role": "user", "content": message.message[:250]})
         return res
 
 
